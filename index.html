@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GiftSoft | Магазин NFT кейсов</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .slogan {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        .product-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-name {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .product-description {
+            font-size: 14px;
+            opacity: 0.8;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .product-price {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ffd700;
+            margin-bottom: 15px;
+        }
+
+        .buy-button {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.2s ease;
+        }
+
+        .buy-button:active {
+            transform: scale(0.95);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            opacity: 0.7;
+            font-size: 12px;
+        }
+
+        /* Анимации */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .product-card {
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        .product-card:nth-child(2) { animation-delay: 0.2s; }
+        .product-card:nth-child(3) { animation-delay: 0.4s; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">🎁 GiftSoft</div>
+            <div class="slogan">Открывай NFT кейсы и получай уникальные подарки</div>
+        </div>
+
+        <div class="product-card">
+            <div class="product-name">🔥 BASIC CASE</div>
+            <div class="product-description">Начни с базового набора. Шанс выиграть редкие NFT!</div>
+            <div class="product-price">100 ₽</div>
+            <button class="buy-button" onclick="buyProduct(1)">Купить</button>
+        </div>
+
+        <div class="product-card">
+            <div class="product-name">💎 PREMIUM CASE</div>
+            <div class="product-description">В 2 раза выше шанс получить легендарные предметы!</div>
+            <div class="product-price">250 ₽</div>
+            <button class="buy-button" onclick="buyProduct(2)">Купить</button>
+        </div>
+
+        <div class="product-card">
+            <div class="product-name">🚀 LEGENDARY CASE</div>
+            <div class="product-description">Эксклюзивные NFT которые больше нигде не получить!</div>
+            <div class="product-price">500 ₽</div>
+            <button class="buy-button" onclick="buyProduct(3)">Купить</button>
+        </div>
+
+        <div class="footer">
+            © 2024 GiftSoft. Все права защищены
+        </div>
+    </div>
+
+    <script>
+        let tg = window.Telegram.WebApp;
+        tg.expand();
+        tg.MainButton.setText("💳 Перейти к оплате").hide();
+
+        function buyProduct(productId) {
+            tg.showPopup({
+                title: "🎉 Отличный выбор!",
+                message: "Товар добавлен в корзину. Переходи к оплате!",
+                buttons: [{type: "ok"}]
+            });
+            
+            // Показываем кнопку оплаты
+            tg.MainButton.setText(`💳 Оплатить ${getPrice(productId)} ₽`).show();
+            tg.MainButton.onClick(function() {
+                tg.sendData(JSON.stringify({
+                    product_id: productId,
+                    action: "purchase"
+                }));
+            });
+        }
+
+        function getPrice(productId) {
+            const prices = {1: 100, 2: 250, 3: 500};
+            return prices[productId];
+        }
+    </script>
+</body>
+</html>
