@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GiftSoft | Магазин NFT кейсов</title>
+    <title>GiftSoft | NFT Кейсы</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
@@ -18,6 +19,7 @@
             color: white;
             min-height: 100vh;
             padding: 20px;
+            line-height: 1.6;
         }
 
         .container {
@@ -28,64 +30,122 @@
         .header {
             text-align: center;
             margin-bottom: 30px;
+            padding: 20px;
         }
 
         .logo {
-            font-size: 32px;
+            font-size: 36px;
             font-weight: bold;
             margin-bottom: 10px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
         .slogan {
             opacity: 0.9;
-            font-size: 14px;
-        }
-
-        .product-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 20px;
+            font-size: 16px;
             margin-bottom: 20px;
+        }
+
+        .divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            margin: 25px 0;
+        }
+
+        .case-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
             border: 1px solid rgba(255, 255, 255, 0.2);
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
 
-        .product-card:hover {
+        .case-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .case-card:hover::before {
+            left: 100%;
+        }
+
+        .case-card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
 
-        .product-name {
+        .case-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .case-icon {
+            font-size: 24px;
+            margin-right: 15px;
+            width: 50px;
+            height: 50px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .case-title {
             font-size: 20px;
             font-weight: bold;
-            margin-bottom: 10px;
         }
 
-        .product-description {
+        .case-description {
             font-size: 14px;
-            opacity: 0.8;
-            margin-bottom: 15px;
-            line-height: 1.4;
+            opacity: 0.9;
+            margin-bottom: 20px;
+            line-height: 1.5;
         }
 
-        .product-price {
-            font-size: 18px;
+        .case-price {
+            font-size: 24px;
             font-weight: bold;
             color: #ffd700;
-            margin-bottom: 15px;
+            text-align: center;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
 
         .buy-button {
             background: linear-gradient(45deg, #ff6b6b, #ee5a24);
             border: none;
-            padding: 12px 25px;
+            padding: 15px 30px;
             border-radius: 50px;
             color: white;
             font-weight: bold;
+            font-size: 16px;
             cursor: pointer;
             width: 100%;
-            transition: transform 0.2s ease;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .buy-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
         }
 
         .buy-button:active {
@@ -94,51 +154,110 @@
 
         .footer {
             text-align: center;
-            margin-top: 30px;
+            margin-top: 40px;
             opacity: 0.7;
             font-size: 12px;
         }
 
         /* Анимации */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .product-card {
-            animation: fadeIn 0.6s ease forwards;
+        .case-card {
+            animation: fadeInUp 0.6s ease forwards;
+            opacity: 0;
         }
 
-        .product-card:nth-child(2) { animation-delay: 0.2s; }
-        .product-card:nth-child(3) { animation-delay: 0.4s; }
+        .case-card:nth-child(1) { animation-delay: 0.1s; }
+        .case-card:nth-child(2) { animation-delay: 0.2s; }
+        .case-card:nth-child(3) { animation-delay: 0.3s; }
+
+        /* Бейджи */
+        .badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 480px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .case-card {
+                padding: 20px;
+            }
+            
+            .case-title {
+                font-size: 18px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <div class="logo">🎁 GiftSoft</div>
+            <div class="logo">GiftSoft</div>
             <div class="slogan">Открывай NFT кейсы и получай уникальные подарки</div>
         </div>
 
-        <div class="product-card">
-            <div class="product-name">🔥 BASIC CASE</div>
-            <div class="product-description">Начни с базового набора. Шанс выиграть редкие NFT!</div>
-            <div class="product-price">100 ₽</div>
-            <button class="buy-button" onclick="buyProduct(1)">Купить</button>
+        <div class="case-card">
+            <div class="badge">ПОПУЛЯРНЫЙ</div>
+            <div class="case-header">
+                <div class="case-icon">🔥</div>
+                <div class="case-title">BASIC CASE</div>
+            </div>
+            <div class="case-description">Начни с базового набора. Шанс выиграть редкие NFT!</div>
+            <div class="case-price">100 ₽</div>
+            <button class="buy-button" onclick="buyProduct(1)">
+                <i class="fas fa-shopping-cart"></i>
+                Купить
+            </button>
         </div>
 
-        <div class="product-card">
-            <div class="product-name">💎 PREMIUM CASE</div>
-            <div class="product-description">В 2 раза выше шанс получить легендарные предметы!</div>
-            <div class="product-price">250 ₽</div>
-            <button class="buy-button" onclick="buyProduct(2)">Купить</button>
+        <div class="divider"></div>
+
+        <div class="case-card">
+            <div class="case-header">
+                <div class="case-icon">💎</div>
+                <div class="case-title">PREMIUM CASE</div>
+            </div>
+            <div class="case-description">В 2 раза выше шанс получить легендарные предметы!</div>
+            <div class="case-price">250 ₽</div>
+            <button class="buy-button" onclick="buyProduct(2)">
+                <i class="fas fa-shopping-cart"></i>
+                Купить
+            </button>
         </div>
 
-        <div class="product-card">
-            <div class="product-name">🚀 LEGENDARY CASE</div>
-            <div class="product-description">Эксклюзивные NFT которые больше нигде не получить!</div>
-            <div class="product-price">500 ₽</div>
-            <button class="buy-button" onclick="buyProduct(3)">Купить</button>
+        <div class="divider"></div>
+
+        <div class="case-card">
+            <div class="badge">ЭКСКЛЮЗИВ</div>
+            <div class="case-header">
+                <div class="case-icon">🚀</div>
+                <div class="case-title">LEGENDARY CASE</div>
+            </div>
+            <div class="case-description">Эксклюзивные NFT которые больше нигде не получить!</div>
+            <div class="case-price">500 ₽</div>
+            <button class="buy-button" onclick="buyProduct(3)">
+                <i class="fas fa-shopping-cart"></i>
+                Купить
+            </button>
         </div>
 
         <div class="footer">
@@ -150,21 +269,28 @@
         let tg = window.Telegram.WebApp;
         tg.expand();
         tg.MainButton.setText("💳 Перейти к оплате").hide();
+        tg.enableClosingConfirmation();
 
         function buyProduct(productId) {
+            const productName = getProductName(productId);
+            const price = getPrice(productId);
+            
             tg.showPopup({
                 title: "🎉 Отличный выбор!",
-                message: "Товар добавлен в корзину. Переходи к оплате!",
+                message: `${productName} добавлен в корзину за ${price} ₽`,
                 buttons: [{type: "ok"}]
             });
             
-            // Показываем кнопку оплаты
-            tg.MainButton.setText(`💳 Оплатить ${getPrice(productId)} ₽`).show();
+            tg.MainButton.setText(`💳 Оплатить ${price} ₽`).show();
             tg.MainButton.onClick(function() {
-                tg.sendData(JSON.stringify({
+                const data = {
                     product_id: productId,
+                    product_name: productName,
+                    price: price,
                     action: "purchase"
-                }));
+                };
+                tg.sendData(JSON.stringify(data));
+                tg.close();
             });
         }
 
@@ -172,6 +298,19 @@
             const prices = {1: 100, 2: 250, 3: 500};
             return prices[productId];
         }
+
+        function getProductName(productId) {
+            const names = {1: "BASIC CASE", 2: "PREMIUM CASE", 3: "LEGENDARY CASE"};
+            return names[productId];
+        }
+
+        // Плавное появление элементов
+        document.addEventListener('DOMContentLoaded', function() {
+            const cases = document.querySelectorAll('.case-card');
+            cases.forEach((caseCard, index) => {
+                caseCard.style.animationDelay = `${0.1 + index * 0.1}s`;
+            });
+        });
     </script>
 </body>
 </html>
